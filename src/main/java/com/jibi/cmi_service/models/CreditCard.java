@@ -1,5 +1,6 @@
 package com.jibi.cmi_service.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +21,8 @@ public class CreditCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "account_id", nullable = false)
+    @OneToOne(mappedBy = "creditCard")
+    @JsonIgnore
     private PaymentAccount account;
 
     @Column(nullable = false)

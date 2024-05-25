@@ -1,5 +1,6 @@
 package com.jibi.cmi_service.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,10 +23,11 @@ public class PaymentAccount {
     private Long id;
     private int balance;
 
-    @OneToOne(mappedBy = "account",cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "creditCard_id", nullable = false)
     private CreditCard creditCard;
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne(mappedBy = "account")
+    @JsonIgnore
     private User user;
     @CreatedDate
     private LocalDateTime createdAt;
