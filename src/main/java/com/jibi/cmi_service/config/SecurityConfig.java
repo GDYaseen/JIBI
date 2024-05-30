@@ -17,7 +17,10 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api","/api/v1","/api/v1/**","/api/v1/cmi/**")
+                        .requestMatchers("/api","/api/v1/**","/api/v1/cmi/**",
+                                "/api/v1/cmi/user","/api/v1/cmi/user/**",
+                                "/api/v1/cmi/account","/api/v1/cmi/account/**",
+                                "/api/v1/cmi/transaction","/api/v1/cmi/transaction/**")
                         .permitAll()
                 );
         return http.build();

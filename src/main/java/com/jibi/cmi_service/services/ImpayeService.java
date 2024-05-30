@@ -2,8 +2,15 @@ package com.jibi.cmi_service.services;
 
 import com.jibi.cmi_service.models.Impaye;
 import com.jibi.cmi_service.repos.ImpayeRepository;
+
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import java.util.List;
+
+@Transactional
+@AllArgsConstructor
 @Service
 public class ImpayeService {
 
@@ -15,12 +22,12 @@ public class ImpayeService {
 
     public Impaye getImpayeById(Long id) {
         return impayeRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Impaye Not Found"));
+                .orElse(null);
     }
 
     public List<Impaye> getImpayesByUserIdAndImpayeId(Long userId, Long creanceId) {
         return impayeRepository.findByUserIdAndCreanceId(userId, creanceId)
-                .orElseThrow(()->new RuntimeException("Impaye Not Found"));
+                .orElse(null);
     }
 
     public List<Impaye> getAllImpayes() {

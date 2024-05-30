@@ -1,5 +1,6 @@
 package com.jibi.cmi_service.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Builder
 @Data
@@ -23,6 +23,7 @@ public class Creance {
 
     @ManyToOne
     @JoinColumn(name = "creancier_id", nullable = false)
+    @JsonIgnore
     private Creancier creancier;
 
     @Column(unique = true, nullable = false)
@@ -35,6 +36,6 @@ public class Creance {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "creance")
-    private List<Formulaire> forms;
+    @OneToOne(mappedBy = "creance")
+    private Formulaire form;
 }

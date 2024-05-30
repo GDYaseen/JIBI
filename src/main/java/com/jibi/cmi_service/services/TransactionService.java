@@ -2,10 +2,15 @@ package com.jibi.cmi_service.services;
 
 import com.jibi.cmi_service.models.Transaction;
 import com.jibi.cmi_service.repos.TransactionRepository;
+
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
+@Transactional
+@AllArgsConstructor
 @Service
 public class TransactionService {
 

@@ -21,7 +21,7 @@ public class PaymentAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int balance;
+    private Double balance;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "creditCard_id", nullable = false)
@@ -37,6 +37,6 @@ public class PaymentAccount {
 
     @PrePersist
     public void initBalance(){
-        balance=0;
+        balance=0D;
     }
 }

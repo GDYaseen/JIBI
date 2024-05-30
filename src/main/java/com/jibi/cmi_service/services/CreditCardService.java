@@ -2,10 +2,8 @@ package com.jibi.cmi_service.services;
 
 import com.jibi.cmi_service.models.CreditCard;
 import com.jibi.cmi_service.repos.CreditCardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CreditCardService {

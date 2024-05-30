@@ -2,10 +2,13 @@ package com.jibi.cmi_service.services;
 
 import com.jibi.cmi_service.models.Creancier;
 import com.jibi.cmi_service.repos.CreancierRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+@Transactional
+@AllArgsConstructor
 @Service
 public class CreancierService {
 

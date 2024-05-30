@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDateTime;
 
 @Builder
@@ -22,10 +24,12 @@ public class Impaye {
 
     @ManyToOne
     @JoinColumn(name = "creance_id", nullable = false)
+    @JsonIgnore
     private Creance creance;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     private Double amount;

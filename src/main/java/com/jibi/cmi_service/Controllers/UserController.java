@@ -8,19 +8,16 @@ import com.jibi.cmi_service.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/cmi")
+@RequestMapping("/api/v1/cmi/user")
 @AllArgsConstructor
-public class CMIController {
+public class UserController {
 
     private UserService userService;
 
-    @PostMapping("/user/create")
+    @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody UserRequest userRequest){
         User user = userService.getUserByPhoneNumber(userRequest.getPhoneNumber());
         if (user != null) {
@@ -47,6 +44,8 @@ public class CMIController {
                 .build();
         p.setUser(newUser);
         User createdUser = userService.addUser(newUser);
-        return new ResponseEntity<>(newUser, HttpStatus.OK);
+        return new ResponseEntity<>(createdUser, HttpStatus.OK);
     }
+
+   
 }

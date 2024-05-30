@@ -5,7 +5,6 @@ import com.jibi.cmi_service.repos.FormulaireRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FormulaireService {
@@ -19,12 +18,12 @@ public class FormulaireService {
 
     public Formulaire getFormulaireById(Long id) {
         return formulaireRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Formulaire Not Found"));
+                .orElse(null);
     }
 
-    public Formulaire getFormulaireByDebtId(Long creanceId) {
+    public Formulaire getFormulaireByCreanceId(Long creanceId) {
         return formulaireRepository.findByCreanceId(creanceId)
-                .orElseThrow(()->new RuntimeException("Formulaire Not Found"));
+                .orElse(null);
     }
 
     public List<Formulaire> getAllFormulaires() {

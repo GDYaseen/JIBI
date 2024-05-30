@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Transactional
@@ -22,12 +21,12 @@ public class PaymentAccountService {
 
     public PaymentAccount getPaymentAccountById(Long id) {
         return paymentAccountRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Payment account Not Found"));
+                .orElse(null);
     }
 
     public PaymentAccount getPaymentAccountByUserId(Long userId) {
         return paymentAccountRepository.findByUserId(userId)
-                .orElseThrow(()->new RuntimeException("Payment account Not Found"));
+                .orElse(null);
     }
 
     public List<PaymentAccount> getAllPaymentAccounts() {

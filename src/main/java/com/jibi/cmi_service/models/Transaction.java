@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.jibi.cmi_service.Enum.TransactionStatus;
+
 import java.time.LocalDateTime;
 
 @Builder
@@ -41,8 +43,4 @@ public class Transaction {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
-}
-
-enum TransactionStatus {
-    PENDING, CONFIRMED, FAILED
 }
