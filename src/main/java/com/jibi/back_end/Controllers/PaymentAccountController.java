@@ -23,7 +23,7 @@ public class PaymentAccountController {
 
     @GetMapping("")
     public ResponseEntity<AccountDto> getSolde(@RequestParam Long id){
-        PaymentAccount account = accountService.getPaymentAccountByUserId(id);
+        PaymentAccount account = accountService.getPaymentAccountByClientId(id);
         if (account == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

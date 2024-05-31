@@ -25,8 +25,8 @@ public class PaymentAccountService {
                 .orElse(null);
     }
 
-    public PaymentAccount getPaymentAccountByUserId(Long userId) {
-        return paymentAccountRepository.findByUserId(userId)
+    public PaymentAccount getPaymentAccountByClientId(Long clientId) {
+        return paymentAccountRepository.findByClientId(clientId)
                 .orElse(null);
     }
 

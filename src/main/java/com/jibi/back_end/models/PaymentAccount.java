@@ -26,9 +26,13 @@ public class PaymentAccount {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "creditCard_id", nullable = false)
     private CreditCard creditCard;
+    
     @OneToOne(mappedBy = "account")
     @JsonIgnore
-    private User user;
+    private Client client;
+    @OneToOne(mappedBy = "account")
+    @JsonIgnore
+    private ClientProfessionel clientProfessionel;
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -36,7 +40,8 @@ public class PaymentAccount {
     private LocalDateTime updatedAt;
 
     @PrePersist
-    public void initBalance(){
+    public void initPersist(){
         balance=0D;
+        createdAt=LocalDateTime.now();
     }
 }

@@ -34,7 +34,7 @@ public class TransactionController {
     @PutMapping("/confirmpay")
     public ResponseEntity<Transaction> confirmPayer(@RequestParam Long id){
         Transaction t = transactionService.getTransactionById(id);
-        PaymentAccount p = t.getUser().getAccount();
+        PaymentAccount p = t.getClient().getAccount();
 
         if(p.getBalance() < t.getImpaye().getAmount()){
             t.setStatus(TransactionStatus.FAILED);
@@ -61,7 +61,7 @@ public class TransactionController {
         Transaction t = Transaction.builder()
             .amount(impaye.getAmount())
             .impaye(impaye)
-            .user(account.getUser())
+            .client(account.getClient())
             .status(TransactionStatus.PENDING)
             .transactionDate(LocalDateTime.now())
             .build();

@@ -24,8 +24,8 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
     @ManyToOne
     @JoinColumn(name = "impaye_id", nullable = false)
@@ -43,4 +43,9 @@ public class Transaction {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void initPersist(){
+        createdAt=LocalDateTime.now();
+    }
 }

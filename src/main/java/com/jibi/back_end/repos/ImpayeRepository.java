@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface ImpayeRepository extends JpaRepository<Impaye, Long> {
-    Optional<List<Impaye>> findByUserIdAndCreanceId(Long userId, Long creanceId);
+    Optional<List<Impaye>> findByClientIdAndCreanceId(Long clientId, Long creanceId);
 }

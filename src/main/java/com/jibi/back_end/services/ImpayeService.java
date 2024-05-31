@@ -26,8 +26,8 @@ public class ImpayeService {
                 .orElse(null);
     }
 
-    public List<Impaye> getImpayesByUserIdAndImpayeId(Long userId, Long creanceId) {
-        return impayeRepository.findByUserIdAndCreanceId(userId, creanceId)
+    public List<Impaye> getImpayesByClientIdAndImpayeId(Long clientId, Long creanceId) {
+        return impayeRepository.findByClientIdAndCreanceId(clientId, creanceId)
                 .orElse(null);
     }
 

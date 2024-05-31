@@ -28,9 +28,9 @@ public class Impaye {
     private Creance creance;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "client_id", nullable = false)
     @JsonIgnore
-    private User user;
+    private Client client;
 
     private Double amount;
 
@@ -43,6 +43,11 @@ public class Impaye {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void initPersist(){
+        createdAt=LocalDateTime.now();
+    }
 
 }
 

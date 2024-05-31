@@ -38,4 +38,9 @@ public class Creance {
 
     @OneToOne(mappedBy = "creance")
     private Formulaire form;
+
+    @PrePersist
+    public void initPersist(){
+        createdAt=LocalDateTime.now();
+    }
 }

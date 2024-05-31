@@ -44,4 +44,9 @@ public class CreditCard {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void initPersist(){
+        createdAt=LocalDateTime.now();
+    }
 }

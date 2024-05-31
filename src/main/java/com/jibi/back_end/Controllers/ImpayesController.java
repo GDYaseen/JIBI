@@ -22,7 +22,7 @@ public class ImpayesController {
 
     @GetMapping
     public ResponseEntity<List<Impaye>> getImpayes(@RequestParam Long userId,@RequestParam Long creanceId){
-        List<Impaye> list = impayeService.getImpayesByUserIdAndImpayeId(userId, creanceId);
+        List<Impaye> list = impayeService.getImpayesByClientIdAndImpayeId(userId, creanceId);
         return new ResponseEntity<List<Impaye>>(list,HttpStatus.OK);
     }
 }

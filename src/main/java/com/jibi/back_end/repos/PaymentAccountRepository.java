@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface PaymentAccountRepository extends JpaRepository<PaymentAccount, Long> {
     // Custom query methods can be defined here
-    Optional<PaymentAccount> findByUserId(Long userId);
+    Optional<PaymentAccount> findByClientId(Long clientId);
 }

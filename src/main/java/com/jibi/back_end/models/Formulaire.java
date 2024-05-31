@@ -36,4 +36,9 @@ public class Formulaire {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void initPersist(){
+        createdAt=LocalDateTime.now();
+    }
 }
