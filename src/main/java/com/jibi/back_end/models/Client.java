@@ -1,6 +1,11 @@
 package com.jibi.back_end.models;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -50,5 +55,14 @@ public class Client extends User{
         this.passwordChanged=passwordChanged;
         this.carteRecto=carteRecto;
         this.carteVerso=carteVerso;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(Client.class.getName()));
     }
 }

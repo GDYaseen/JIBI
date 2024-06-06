@@ -16,21 +16,25 @@ import java.util.List;
 public class PaymentAccountService {
 
     private PaymentAccountRepository paymentAccountRepository;
-    public PaymentAccount addPaymentAccount(PaymentAccount paymentAccount) {
-        return paymentAccountRepository.save(paymentAccount);
+    public PaymentAccount savePaymentAccount(PaymentAccount paymentAccount) {
+        return this.paymentAccountRepository.save(paymentAccount);
     }
 
     public PaymentAccount getPaymentAccountById(Long id) {
-        return paymentAccountRepository.findById(id)
+        return this.paymentAccountRepository.findById(id)
                 .orElse(null);
     }
 
     public PaymentAccount getPaymentAccountByClientId(Long clientId) {
-        return paymentAccountRepository.findByClientId(clientId)
+        return this.paymentAccountRepository.findByClientId(clientId)
                 .orElse(null);
     }
 
     public List<PaymentAccount> getAllPaymentAccounts() {
-        return paymentAccountRepository.findAll();
+        return this.paymentAccountRepository.findAll();
+    }
+    
+    public void deletePaymentAccount(Long id) {
+        this.paymentAccountRepository.deleteById(id);
     }
 }

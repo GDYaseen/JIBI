@@ -3,6 +3,7 @@ package com.jibi.back_end.Controllers;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.jibi.back_end.models.ClientProfessionel;
@@ -17,6 +18,7 @@ import com.jibi.back_end.services.ClientProfessionelService;
 public class ClientProfessionelController {
 
     private ClientProfessionelService clientProfessionelService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/create")
     public ResponseEntity<ClientProfessionel> createClientProfessionel(@RequestBody ClientProfessionelRequest clientProfessionelRequest){
@@ -44,11 +46,11 @@ public class ClientProfessionelController {
                 .name(clientProfessionelRequest.getName())
                 .carteRecto(clientProfessionelRequest.getCarteRecto())
                 .carteVerso(clientProfessionelRequest.getCarteVerso())
-                .password("12345")
+                .password(passwordEncoder.encode(clientProfessionelRequest.getPassword()))
                 .build();
 
         p.setClientProfessionel(newClientProfessionel);
-        ClientProfessionel createdClientProfessionel = clientProfessionelService.addClientProfessionel(newClientProfessionel);
+        ClientProfessionel createdClientProfessionel = clientProfessionelService.saveClientProfessionel(newClientProfessionel);
         return new ResponseEntity<>(createdClientProfessionel, HttpStatus.OK);
     }
 

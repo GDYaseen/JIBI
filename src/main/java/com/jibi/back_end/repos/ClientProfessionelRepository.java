@@ -10,4 +10,6 @@ import com.jibi.back_end.models.ClientProfessionel;
 @Repository
 public interface ClientProfessionelRepository extends JpaRepository<ClientProfessionel, Long> {
     Optional<ClientProfessionel> findByPhoneNumber(String phoneNumber);
+    Optional<ClientProfessionel> findByEmailOrPhoneNumber(String email, String phoneNumber);
+    Optional<ClientProfessionel> findByEmail(String email);
 }

@@ -17,29 +17,28 @@ public class AdminService {
 
     private AdminRepository adminRepository;
 
-    public Admin addAdmin(Admin admin) {
-        return adminRepository.save(admin);
+    public Admin saveAdmin(Admin admin) {
+        return this.adminRepository.save(admin);
     }
 
-    public void deleteAdminById(Long id) {
-        adminRepository.deleteById(id);
+    public void deleteAdmin(Long id) {
+        this.adminRepository.deleteById(id);
     }
 
     public Admin getAdminById(Long id) {
-        return adminRepository.findById(id)
+        return this.adminRepository.findById(id)
                 .orElse(null);
     }
 
-
     public List<Admin> getAllAdmins() {
-        return adminRepository.findAll();
+        return this.adminRepository.findAll();
     }
     public Admin getAdminByEmail(String email) {
-        return adminRepository.findByEmail(email)
+        return this.adminRepository.findByEmail(email)
                 .orElse(null);
     }
     public Admin getAdminByEmailAndPassword(String email,String password) {
-        return adminRepository.findByEmailAndPassword(email,password)
+        return this.adminRepository.findByEmailAndPassword(email,password)
                 .orElse(null);
     }
 }

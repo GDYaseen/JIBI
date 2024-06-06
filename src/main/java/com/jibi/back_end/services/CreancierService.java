@@ -16,22 +16,26 @@ public class CreancierService {
 
     private CreancierRepository creancierRepository;
 
-    public Creancier addCreancier(Creancier creancier) {
-        return creancierRepository.save(creancier);
+    public Creancier saveCreancier(Creancier creancier) {
+        return this.creancierRepository.save(creancier);
     }
 
     public Creancier getCreancierById(Long id) {
-        return creancierRepository.findById(id)
+        return this.creancierRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("Creancier Not Found"));
     }
 
     public Creancier getCreancierByCreancierCode(String creancierCode) {
-        return creancierRepository.findByCreancierCode(creancierCode)
+        return this.creancierRepository.findByCreancierCode(creancierCode)
                 .orElseThrow(()->new RuntimeException("Creancier Not Found"));
     }
 
     public List<Creancier> getAllCreanciers() {
-        return creancierRepository.findAll();
+        return this.creancierRepository.findAll();
+    }
+
+    public void deleteCreancier(Long id){
+        this.creancierRepository.deleteById(id);
     }
 }
 

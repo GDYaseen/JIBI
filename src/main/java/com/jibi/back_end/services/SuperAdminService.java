@@ -17,29 +17,29 @@ public class SuperAdminService {
 
     private SuperAdminRepository superAdminRepository;
 
-    public SuperAdmin addSuperAdmin(SuperAdmin superAdmin) {
-        return superAdminRepository.save(superAdmin);
+    public SuperAdmin saveSuperAdmin(SuperAdmin superAdmin) {
+        return this.superAdminRepository.save(superAdmin);
     }
 
-    public void deleteSuperAdminById(Long id) {
-        superAdminRepository.deleteById(id);
+    public void deleteSuperAdmin(Long id) {
+        this.superAdminRepository.deleteById(id);
     }
 
     public SuperAdmin getSuperAdminById(Long id) {
-        return superAdminRepository.findById(id)
+        return this.superAdminRepository.findById(id)
                 .orElse(null);
     }
 
 
     public List<SuperAdmin> getAllSuperAdmins() {
-        return superAdminRepository.findAll();
+        return this.superAdminRepository.findAll();
     }
     public SuperAdmin getSuperAdminByEmail(String email) {
-        return superAdminRepository.findByEmail(email)
+        return this.superAdminRepository.findByEmail(email)
                 .orElse(null);
     }
     public SuperAdmin getSuperAdminByEmailAndPassword(String email,String password) {
-        return superAdminRepository.findByEmailAndPassword(email,password)
+        return this.superAdminRepository.findByEmailAndPassword(email,password)
                 .orElse(null);
     }
 }

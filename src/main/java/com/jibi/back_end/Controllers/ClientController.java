@@ -3,6 +3,7 @@ package com.jibi.back_end.Controllers;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.jibi.back_end.models.Client;
@@ -17,6 +18,7 @@ import com.jibi.back_end.services.ClientService;
 public class ClientController {
 
     private ClientService clientService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/create")
     public ResponseEntity<Client> createClient(@RequestBody ClientRequest clientRequest){
@@ -44,11 +46,11 @@ public class ClientController {
                 .name(clientRequest.getName())
                 .carteRecto(clientRequest.getCarteRecto())
                 .carteVerso(clientRequest.getCarteVerso())
-                .password("12345")
+                .password(passwordEncoder.encode(clientRequest.getPassword()))
                 .build();
 
         p.setClient(newClient);
-        Client createdClient = clientService.addClient(newClient);
+        Client createdClient = clientService.saveClient(newClient);
         return new ResponseEntity<>(createdClient, HttpStatus.OK);
     }
 

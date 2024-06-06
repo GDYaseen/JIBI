@@ -17,22 +17,26 @@ public class ImpayeService {
 
     private ImpayeRepository impayeRepository;
 
-    public Impaye addImpaye(Impaye impaye) {
-        return impayeRepository.save(impaye);
+    public Impaye saveImpaye(Impaye impaye) {
+        return this.impayeRepository.save(impaye);
     }
 
     public Impaye getImpayeById(Long id) {
-        return impayeRepository.findById(id)
+        return this.impayeRepository.findById(id)
                 .orElse(null);
     }
 
     public List<Impaye> getImpayesByClientIdAndImpayeId(Long clientId, Long creanceId) {
-        return impayeRepository.findByClientIdAndCreanceId(clientId, creanceId)
+        return this.impayeRepository.findByClientIdAndCreanceId(clientId, creanceId)
                 .orElse(null);
     }
 
     public List<Impaye> getAllImpayes() {
-        return impayeRepository.findAll();
+        return this.impayeRepository.findAll();
+    }
+    
+    public void deleteImpaye(Long id) {
+        this.impayeRepository.deleteById(id);
     }
 }
 

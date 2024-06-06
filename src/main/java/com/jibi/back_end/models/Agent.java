@@ -1,7 +1,13 @@
 package com.jibi.back_end.models;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
 import jakarta.persistence.PrePersist;
@@ -27,8 +33,10 @@ public class Agent extends User{
     private String patente;
 
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] carteRecto;
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] carteVerso;
 
     @PrePersist
@@ -53,5 +61,15 @@ public class Agent extends User{
         this.dateNaissance = dateNaissance;
         this.immatriculationCommerce = immatriculationCommerce;
         this.patente = patente;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(Agent.class.getName()));
     }
 }

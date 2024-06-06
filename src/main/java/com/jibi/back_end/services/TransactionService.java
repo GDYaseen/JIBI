@@ -17,17 +17,21 @@ public class TransactionService {
 
     private TransactionRepository transactionRepository;
 
-    public Transaction addTransaction(Transaction transaction) {
-        return transactionRepository.save(transaction);
+    public Transaction saveTransaction(Transaction transaction) {
+        return this.transactionRepository.save(transaction);
     }
 
     public Transaction getTransactionById(Long id) {
-        return transactionRepository.findById(id)
+        return this.transactionRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("Transaction Not Found"));
     }
 
     public List<Transaction> getAllTransactions() {
-        return transactionRepository.findAll();
+        return this.transactionRepository.findAll();
+    }
+
+    public void deleteTransaction(Long id) {
+        this.transactionRepository.deleteById(id);
     }
 }
 

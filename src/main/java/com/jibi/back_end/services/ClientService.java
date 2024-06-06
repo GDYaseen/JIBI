@@ -20,25 +20,24 @@ public class ClientService {
     // private UserRepository userRepository;
     private ClientRepository clientRepository;
 
-    public Client addClient(Client client) {
-        // Additional logic specific to adding clients, if any
-        return clientRepository.save(client);
+    public Client saveClient(Client client) {
+        return this.clientRepository.save(client);
     }
 
-    public void deleteClientById(Long id) {
-        clientRepository.deleteById(id);
+    public void deleteClient(Long id) {
+        this.clientRepository.deleteById(id);
     }
 
     public Client getClientById(Long id) {
-        return clientRepository.findById(id).orElse(null);
+        return this.clientRepository.findById(id).orElse(null);
     }
 
     public List<Client> getAllClients() {
-        return clientRepository.findAll();
+        return this.clientRepository.findAll();
     }
 
     public Client getClientByPhoneNumber(String phoneNumber) {
-        return clientRepository.findByPhoneNumber(phoneNumber)
+        return this.clientRepository.findByPhoneNumber(phoneNumber)
                 .orElse(null);
     }
 }

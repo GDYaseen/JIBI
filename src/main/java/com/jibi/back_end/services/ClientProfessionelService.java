@@ -17,28 +17,30 @@ import lombok.AllArgsConstructor;
 @Service
 public class ClientProfessionelService {
 
-    // private UserRepository userRepository;
     private ClientProfessionelRepository clientProfessionelRepository;
 
-    public ClientProfessionel addClientProfessionel(ClientProfessionel clientProfessionel) {
-        // Additional logic specific to adding clientProfessionels, if any
-        return clientProfessionelRepository.save(clientProfessionel);
+    public ClientProfessionel saveClientProfessionel(ClientProfessionel clientProfessionel) {
+        return this.clientProfessionelRepository.save(clientProfessionel);
     }
 
-    public void deleteClientProfessionelById(Long id) {
-        clientProfessionelRepository.deleteById(id);
+    public void deleteClientProfessionel(Long id) {
+        this.clientProfessionelRepository.deleteById(id);
     }
 
     public ClientProfessionel getClientProfessionelById(Long id) {
-        return clientProfessionelRepository.findById(id).orElse(null);
+        return this.clientProfessionelRepository.findById(id).orElse(null);
     }
 
     public List<ClientProfessionel> getAllClientProfessionels() {
-        return clientProfessionelRepository.findAll();
+        return this.clientProfessionelRepository.findAll();
     }
 
     public ClientProfessionel getClientProfessionelByPhoneNumber(String phoneNumber) {
-        return clientProfessionelRepository.findByPhoneNumber(phoneNumber)
+        return this.clientProfessionelRepository.findByPhoneNumber(phoneNumber)
                 .orElse(null);
+    }
+
+    public void delete(Long id){
+        this.clientProfessionelRepository.deleteById(id);
     }
 }

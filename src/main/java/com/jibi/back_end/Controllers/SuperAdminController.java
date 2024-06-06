@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.jibi.back_end.models.SuperAdmin;
@@ -16,7 +17,7 @@ import com.jibi.back_end.services.SuperAdminService;
 public class SuperAdminController {
 
     private SuperAdminService superAdminService;
-
+    private final PasswordEncoder passwordEncoder;
     @PostMapping("/create")
     public ResponseEntity<SuperAdmin> createAdmin(@RequestBody AdminRequest superAdminRequest){
         SuperAdmin superAdmin = superAdminService.getSuperAdminByEmail(superAdminRequest.getEmail());
@@ -27,10 +28,10 @@ public class SuperAdminController {
         SuperAdmin newSuperAdmin = SuperAdmin.builder()
                 .email(superAdminRequest.getEmail())
                 .name(superAdminRequest.getName())
-                .password(superAdminRequest.getPassword())
+                .password(passwordEncoder.encode(superAdminRequest.getPassword()))
                 .build();
 
-        SuperAdmin createdAdmin = superAdminService.addSuperAdmin(newSuperAdmin);
+        SuperAdmin createdAdmin = superAdminService.saveSuperAdmin(newSuperAdmin);
         return new ResponseEntity<>(createdAdmin, HttpStatus.OK);
     }
 }

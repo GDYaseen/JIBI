@@ -44,8 +44,8 @@ public class TransactionController {
         t.setStatus(TransactionStatus.CONFIRMED);
         p.setBalance(p.getBalance() - t.getImpaye().getAmount());
         
-        transactionService.addTransaction(t); //modify
-        accountService.addPaymentAccount(p);//modify
+        transactionService.saveTransaction(t); //modify
+        accountService.savePaymentAccount(p);//modify
         return new ResponseEntity<>(t,HttpStatus.OK);
         
     }
@@ -66,7 +66,7 @@ public class TransactionController {
             .transactionDate(LocalDateTime.now())
             .build();
         
-        transactionService.addTransaction(t);
+        transactionService.saveTransaction(t);
         return new ResponseEntity<Transaction>(t,HttpStatus.OK);
     }
 }

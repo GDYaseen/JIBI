@@ -17,26 +17,26 @@ public class UserService {
 
     private UserRepository userRepository;
 
-    public User addUser(User user) {
-        return userRepository.save(user);
+    public User saveUser(User user) {
+        return this.userRepository.save(user);
     }
 
-    public void deleteUserById(Long id) {
-        userRepository.deleteById(id);
+    public void deleteUser(Long id) {
+        this.userRepository.deleteById(id);
     }
 
     public User getUserById(Long id) {
-        return userRepository.findById(id)
+        return this.userRepository.findById(id)
                 .orElse(null);
     }
 
 
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return this.userRepository.findAll();
     }
 
     public User getUserByPhoneNumber(String phoneNumber) {
-        return userRepository.findByPhoneNumber(phoneNumber)
+        return this.userRepository.findByPhoneNumber(phoneNumber)
                 .orElse(null);
     }
 }

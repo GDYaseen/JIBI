@@ -13,7 +13,7 @@ public class AgentRequest {
     private String password;
     private String immatriculationCommerce;
     private String patente;
-    private byte[] carteRecto;
-    private byte[] carteVerso;
+    private String carteRecto;
+    private String carteVerso;
 
 }

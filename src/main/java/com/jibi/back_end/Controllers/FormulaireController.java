@@ -15,7 +15,7 @@ import com.jibi.back_end.services.FormulaireService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/cmi/form")
+@RequestMapping("/api/v1/cmi/formulaire")
 @AllArgsConstructor
 public class FormulaireController {
     

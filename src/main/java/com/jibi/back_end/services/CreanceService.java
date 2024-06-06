@@ -1,32 +1,39 @@
 package com.jibi.back_end.services;
 import org.springframework.stereotype.Service;
 
+
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+
 import com.jibi.back_end.models.Creance;
 import com.jibi.back_end.repos.CreanceRepository;
 
 import java.util.List;
 
+@Transactional
+@AllArgsConstructor
 @Service
 public class CreanceService {
 
     private CreanceRepository creanceRepository;
 
-    public Creance addCreance(Creance creance) {
-        return creanceRepository.save(creance);
+    public Creance saveCreance(Creance creance) {
+        return this.creanceRepository.save(creance);
     }
 
-    public Creance getCreanceById(Long id) {
-        return creanceRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Creance Not Found"));
+    public Creance getCreance(Long id) {
+        return this.creanceRepository.findById(id)
+                .orElse(null);
     }
 
     public Creance getCreanceByCreanceCode(String creanceCode) {
-        return creanceRepository.findByCreanceCode(creanceCode)
-                .orElseThrow(()->new RuntimeException("Creance Not Found"));
+        return this.creanceRepository.findByCreanceCode(creanceCode)
+                .orElse(null);
     }
 
     public List<Creance> getAllCreances() {
-        return creanceRepository.findAll();
+        return this.creanceRepository.findAll();
     }
+    
 }
 

@@ -17,24 +17,24 @@ public class AgentService {
 
     private AgentRepository agentRepository;
 
-    public Agent addAgent(Agent agent) {
-        return agentRepository.save(agent);
+    public Agent saveAgent(Agent agent) {
+        return this.agentRepository.save(agent);
     }
 
-    public void deleteAgentById(Long id) {
-        agentRepository.deleteById(id);
+    public void deleteAgent(Long id){
+        this.agentRepository.deleteById(id);
     }
 
     public Agent getAgentById(Long id) {
-        return agentRepository.findById(id).orElse(null);
+        return this.agentRepository.findById(id).orElse(null);
     }
 
     public List<Agent> getAllAgents() {
-        return agentRepository.findAll();
+        return this.agentRepository.findAll();
     }
 
     public Agent getAgentByEmail(String email) {
-        return agentRepository.findByEmail(email)
+        return this.agentRepository.findByEmail(email)
                 .orElse(null);
     }
 }
