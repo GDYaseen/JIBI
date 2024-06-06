@@ -96,7 +96,8 @@ public class AgentController {
         if (agent == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        if(agentService.getAgentByEmail(agentRequest.getEmail())!=null){
+        Agent testAgent = agentService.getAgentByEmail(agentRequest.getEmail());
+        if(testAgent!=null && testAgent.getId()!=agent.getId()){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
         byte[] carteRecto=null;
@@ -104,6 +105,7 @@ public class AgentController {
         if(agentRequest.getCarteRecto()!=null) carteRecto = Base64.getDecoder().decode(agentRequest.getCarteRecto());
         if(agentRequest.getCarteVerso()!=null) carteVerso = Base64.getDecoder().decode(agentRequest.getCarteVerso());
         Agent newAgent = Agent.builder()
+                .id(id)
                 .phoneNumber(agentRequest.getPhoneNumber())
                 .email(agentRequest.getEmail())
                 .name(agentRequest.getName())

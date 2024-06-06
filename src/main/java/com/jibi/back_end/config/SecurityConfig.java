@@ -49,7 +49,7 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/v1/superadmin","/api/v1/superadmin/**","/api/v1/admin/create")
                                 .hasAuthority(SuperAdmin.class.getName())
-                                .requestMatchers("/api/v1/admin","/api/v1/admin/**")
+                                .requestMatchers("/api/v1/admin","/api/v1/admin/**","/api/v1/admin/modify/**")
                                 .hasAuthority(SuperAdmin.class.getName())
                                 .requestMatchers("/api/v1/agent","/api/v1/agent/create","/api/v1/agent/modify/**")
                                 .hasAnyAuthority(Admin.class.getName(),SuperAdmin.class.getName())

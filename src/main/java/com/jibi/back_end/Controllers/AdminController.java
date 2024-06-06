@@ -44,4 +44,31 @@ public class AdminController {
     System.out.println("Admin list: "+list.size());
     return new ResponseEntity<>(list,HttpStatus.OK);
    }
+   @PutMapping("/modify/{id}")
+   public ResponseEntity<Admin> modifyAdmin(@RequestBody AdminRequest adminRequest,@PathVariable Long id){
+    Admin admin = adminService.getAdminById(id);
+    if(admin==null){
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    Admin testAdmin = adminService.getAdminByEmail(adminRequest.getEmail()) ;
+    if (testAdmin!= null && testAdmin.getId()!=admin.getId()) {
+        return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+    }
+
+    Admin newAdmin = Admin.builder()
+            .id(id)
+            .email(adminRequest.getEmail())
+            .name(adminRequest.getName())
+            .password(passwordEncoder.encode(adminRequest.getPassword()))
+            .build();
+
+    Admin createdAdmin = adminService.saveAdmin(newAdmin);
+    return new ResponseEntity<>(createdAdmin, HttpStatus.OK);
+   }
+
+   @DeleteMapping("/{id}")
+   public ResponseEntity<?> deleteMapping(@PathVariable Long id){
+        adminService.deleteAdmin(id);
+        return ResponseEntity.ok("Admin deleted");
+   }
 }
