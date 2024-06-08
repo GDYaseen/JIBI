@@ -13,6 +13,7 @@ import com.jibi.back_end.repos.ClientRepository;
 import com.jibi.back_end.repos.SuperAdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -30,39 +31,43 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse login(AuthenticationRequest request,String role) {
-        System.out.println("Accessing login in authenticationService, login and password: "+request.getLogin()+" "+request.getPassword());
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getLogin(),request.getPassword()
-                )
-        );//problem is here
-        String jwtToken="";
-        User u=null;
-            if(role.equals("Client"))
-            {
-                System.out.println("role is client, "+request.getLogin());
-                var user = clientRepository.findByEmailOrPhoneNumber(request.getLogin(), request.getLogin())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-                jwtToken=jwtService.generateToken(user);
-                u=user;
-            }
-            if(role.equals("Agent"))
-            {
-                System.out.println("role is agent, "+request.getLogin());
-                var user = agentRepository.findByEmailOrPhoneNumber(request.getLogin(), request.getLogin())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-                jwtToken=jwtService.generateToken(user);
-                u=user;
-            }
-            if(role.equals("ClientProf"))
-            {
-                System.out.println("role is clientprof, "+request.getLogin());
-                var user = clientProfRepository.findByEmailOrPhoneNumber(request.getLogin(), request.getLogin())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-                jwtToken=jwtService.generateToken(user);
-                u=user;
-            }
+    public AuthenticationResponse login(AuthenticationRequest request, String role) throws UsernameNotFoundException{
+        try {
+            System.out.println("Accessing login in authenticationService, login and password: " + request.getLogin() + " " + request.getPassword());
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getLogin(), request.getPassword()
+                    )
+            );
+        } catch (BadCredentialsException e) {
+            System.out.println("Authentication failed: Invalid credentials");
+            throw new UsernameNotFoundException("Invalid credentials", e);
+        } catch (Exception e) {
+            System.out.println("Authentication failed: " + e.getMessage());
+            throw new UsernameNotFoundException("Authentication failed", e);
+        }
+
+        String jwtToken = "";
+        User u = null;
+        if (role.equals("Client")) {
+            System.out.println("role is client, " + request.getLogin());
+            var user = clientRepository.findByEmailOrPhoneNumber(request.getLogin(), request.getLogin())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            jwtToken = jwtService.generateToken(user);
+            u = user;
+        } else if (role.equals("Agent")) {
+            System.out.println("role is agent, " + request.getLogin());
+            var user = agentRepository.findByEmailOrPhoneNumber(request.getLogin(), request.getLogin())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            jwtToken = jwtService.generateToken(user);
+            u = user;
+        } else if (role.equals("ClientProf")) {
+            System.out.println("role is clientprof, " + request.getLogin());
+            var user = clientProfRepository.findByEmailOrPhoneNumber(request.getLogin(), request.getLogin())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            jwtToken = jwtService.generateToken(user);
+            u = user;
+        }
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -71,7 +76,7 @@ public class AuthenticationService {
     }
 
     public AdminAuthResponse loginAdmin(AuthenticationRequest request) {
-        System.out.println("Accessing login in authenticationService, login and password: "+request.getLogin()+" "+request.getPassword());
+        System.out.println("Accessing adminLogin in authenticationService, login and password: "+request.getLogin()+" "+request.getPassword());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getLogin(),request.getPassword()

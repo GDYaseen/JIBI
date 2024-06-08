@@ -34,6 +34,14 @@ public class CreanceService {
     public List<Creance> getAllCreances() {
         return this.creanceRepository.findAll();
     }
+
+    public List<Creance> getAllCreancesByIds(List<Long> ids) {
+        return this.creanceRepository.findAllByIdIn(ids);
+    }
+
+    public void saveAllCreances(List<Creance> creanceList) {
+        creanceRepository.saveAll(creanceList);
+    }
     
 }
 

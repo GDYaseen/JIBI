@@ -2,6 +2,8 @@ package com.jibi.back_end.Controllers;
 
 import lombok.AllArgsConstructor;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,4 +36,38 @@ public class SuperAdminController {
         SuperAdmin createdAdmin = superAdminService.saveSuperAdmin(newSuperAdmin);
         return new ResponseEntity<>(createdAdmin, HttpStatus.OK);
     }
+
+    @GetMapping("")
+   public ResponseEntity<List<SuperAdmin>> getSuperAdmins(){
+    List<SuperAdmin> list = superAdminService.getAllSuperAdmins();
+    System.out.println("Admin list: "+list.size());
+    return new ResponseEntity<>(list,HttpStatus.OK);
+   }
+   @PutMapping("/modify/{id}")
+   public ResponseEntity<SuperAdmin> modifySuperAdmin(@RequestBody AdminRequest adminRequest,@PathVariable Long id){
+    SuperAdmin admin = superAdminService.getSuperAdminById(id);
+    if(admin==null){
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    SuperAdmin testAdmin = superAdminService.getSuperAdminByEmail(adminRequest.getEmail()) ;
+    if (testAdmin!= null && testAdmin.getId()!=admin.getId()) {
+        return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+    }
+
+    SuperAdmin newAdmin = SuperAdmin.builder()
+            .id(id)
+            .email(adminRequest.getEmail())
+            .name(adminRequest.getName())
+            .password(passwordEncoder.encode(adminRequest.getPassword()))
+            .build();
+
+    SuperAdmin createdAdmin = superAdminService.saveSuperAdmin(newAdmin);
+    return new ResponseEntity<>(createdAdmin, HttpStatus.OK);
+   }
+
+   @DeleteMapping("/{id}")
+   public ResponseEntity<?> deleteMapping(@PathVariable Long id){
+        superAdminService.deleteSuperAdmin(id);
+        return ResponseEntity.ok("Admin deleted");
+   }
 }

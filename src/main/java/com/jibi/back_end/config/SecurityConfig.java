@@ -1,5 +1,6 @@
 package com.jibi.back_end.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -9,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -33,8 +33,8 @@ public class SecurityConfig {
     @SuppressWarnings("removal")
 @Primary
     @Bean
-    public AuthenticationManager securityAuthenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
+    public AuthenticationManager securityAuthenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, CustomUserDetailsService userDetailsService) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class).parentAuthenticationManager(null)
                 .authenticationProvider(adminAuthenticationProvider)
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder)
@@ -55,13 +55,27 @@ public class SecurityConfig {
                                 .hasAnyAuthority(Admin.class.getName(),SuperAdmin.class.getName())
                                 .requestMatchers("/api/v1/agent/changepass/**") // Use antMatchers for more granular control
                                 .hasAnyAuthority(Agent.class.getName(),Admin.class.getName(),SuperAdmin.class.getName())
-                                // .authenticated()
-                        // .permitAll()
+                                .requestMatchers("/api/v1/client","/api/v1/client/create","/api/v1/client/modify/**")
+                                .hasAnyAuthority(Agent.class.getName(),Admin.class.getName(),SuperAdmin.class.getName())
+                                .requestMatchers("/api/v1/client/changepass/**") // Use antMatchers for more granular control
+                                .hasAnyAuthority(Client.class.getName(),Agent.class.getName(),Admin.class.getName(),SuperAdmin.class.getName())
+                                .anyRequest()
+                        .permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(adminAuthenticationProvider)
-
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+@Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.parentAuthenticationManager(null);  // This line prevents the infinite loop issue
+    }
+    // @Bean
+    // public AuthenticationFailureHandler customAuthenticationFailureHandler() {
+    //     return (request, response, exception) -> {
+    //         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    //         response.getWriter().write("Authentication failed: " + exception.getMessage());
+    //     };
+    // }
 }

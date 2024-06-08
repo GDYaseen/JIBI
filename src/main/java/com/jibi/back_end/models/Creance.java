@@ -21,8 +21,8 @@ public class Creance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "creancier_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "creancier_id")
     @JsonIgnore
     private Creancier creancier;
 

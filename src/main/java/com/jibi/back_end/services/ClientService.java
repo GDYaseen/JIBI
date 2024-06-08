@@ -40,4 +40,9 @@ public class ClientService {
         return this.clientRepository.findByPhoneNumber(phoneNumber)
                 .orElse(null);
     }
+
+    public Client getClientByEmail(String email) {
+        return this.clientRepository.findByEmail(email)
+                .orElse(null);
+    }
 }

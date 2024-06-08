@@ -6,7 +6,8 @@ import com.jibi.back_end.Controllers.auth.AuthenticationRequest;
     import com.jibi.back_end.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
     import org.springframework.web.bind.annotation.*;
-    import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
     @RestController
     @CrossOrigin
@@ -22,14 +23,24 @@ import lombok.RequiredArgsConstructor;
         //     return ResponseEntity.ok(service.register(request));
         // }
         @PostMapping("/client/login")
-        public ResponseEntity<AuthenticationResponse> loginClient(@RequestBody AuthenticationRequest request){
+        public ResponseEntity<?> loginClient(@RequestBody AuthenticationRequest request){
+            try{
             System.out.println("*********\t\tAccessing /api/auth/client/login");
-            return ResponseEntity.ok(service.login(request,"Client"));
+            return new ResponseEntity<AuthenticationResponse>(service.login(request,"Client"),HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
         }
         @PostMapping("/agent/login")
-        public ResponseEntity<AuthenticationResponse> loginAgent(@RequestBody AuthenticationRequest request){
-            System.out.println("*********\t\tAccessing /api/auth/agent/login");
-            return ResponseEntity.ok(service.login(request,"Agent"));
+        public ResponseEntity<?> loginAgent(@RequestBody AuthenticationRequest request){
+            try{
+                System.out.println("*********\t\tAccessing /api/auth/agent/login");
+            return new ResponseEntity<AuthenticationResponse>(service.login(request,"Agent"),HttpStatus.OK);
+        }
+            catch(Exception e){
+                return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+            }
         }
         @PostMapping("/admin/login")
         public ResponseEntity<AdminAuthResponse> loginAdmin(@RequestBody AuthenticationRequest request){

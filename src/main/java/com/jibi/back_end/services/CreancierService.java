@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import com.jibi.back_end.models.Creance;
 import com.jibi.back_end.models.Creancier;
 import com.jibi.back_end.repos.CreancierRepository;
 
@@ -22,12 +23,12 @@ public class CreancierService {
 
     public Creancier getCreancierById(Long id) {
         return this.creancierRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Creancier Not Found"));
+                .orElse(null);
     }
 
     public Creancier getCreancierByCreancierCode(String creancierCode) {
         return this.creancierRepository.findByCreancierCode(creancierCode)
-                .orElseThrow(()->new RuntimeException("Creancier Not Found"));
+                .orElse(null);
     }
 
     public List<Creancier> getAllCreanciers() {
