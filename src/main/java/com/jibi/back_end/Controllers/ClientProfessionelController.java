@@ -29,10 +29,10 @@ public class ClientProfessionelController {
     private SMSService smsService;
 
     @PostMapping("/create")
-    public ResponseEntity<ClientProfessionel> createClientProfessionel(@RequestBody ClientProfessionelRequest clientProfessionelRequest){
+    public ResponseEntity<?> createClientProfessionel(@RequestBody ClientProfessionelRequest clientProfessionelRequest){
         ClientProfessionel clientProfessionel = clientProfessionelService.getClientProfessionelByPhoneNumber(clientProfessionelRequest.getPhoneNumber());
         if (clientProfessionel != null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("{\"message\":\"ClientProfessionel already exists\"}",HttpStatus.BAD_REQUEST);
         }
         CreditCard c = CreditCard.builder()
                 .cvv(clientProfessionelRequest.getPaymentAccountRequest().getCreditCardRequest().getCvv())
@@ -63,17 +63,17 @@ public class ClientProfessionelController {
 
         p.setClientProfessionel(newClientProfessionel);
         ClientProfessionel createdClientProfessionel = clientProfessionelService.saveClientProfessionel(newClientProfessionel);
-        return new ResponseEntity<>(createdClientProfessionel, HttpStatus.OK);
+        return new ResponseEntity<ClientProfessionel>(createdClientProfessionel, HttpStatus.OK);
     }
 
    @GetMapping("/{email}")
-    public ResponseEntity<ClientProfessionel> geClient(@PathVariable String email){
+    public ResponseEntity<?> geClient(@PathVariable String email){
         if(email == null)
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"Email not provided\"}",HttpStatus.BAD_REQUEST);
         ClientProfessionel clientProfessionel = clientProfessionelService.getClientProfessionelByEmail(email);
         if(clientProfessionel == null)
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(clientProfessionel,HttpStatus.OK);
+            return new ResponseEntity<>("{\"message\":\"Client Professionel not found\"}",HttpStatus.NOT_FOUND);
+        return new ResponseEntity<ClientProfessionel>(clientProfessionel,HttpStatus.OK);
     }
 
     @GetMapping("")
@@ -86,21 +86,21 @@ public class ClientProfessionelController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteClientProfessionel(@PathVariable Long id){
         clientProfessionelService.deleteClientProfessionel(id);
-        return ResponseEntity.ok("Client deleted");
+        return ResponseEntity.ok("{\"message\":\"Client Professionel deleted\"}");
     }
 
     @PutMapping("/changepass/{id}")
     public ResponseEntity<?> changePassword(@RequestBody ChangePassRequest request, @PathVariable Long id){
         ClientProfessionel clientProfessionel = clientProfessionelService.getClientProfessionelById(id);
         if(clientProfessionel==null){
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("{\"message\":\"Client Professionel not found\"}",HttpStatus.NOT_FOUND);
         }
         if(request.getNewPassword()==null){
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"New Password not provided\"}",HttpStatus.BAD_REQUEST);
         }
         if(!clientProfessionel.getResetCodePass().equals(request.getCode())){
             System.out.println(clientProfessionel.getResetCodePass()+"   "+ request.getCode());
-            return new ResponseEntity<>("Wrong code",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"Wrong code\"}",HttpStatus.BAD_REQUEST);
         }
         clientProfessionel.setPassword(passwordEncoder.encode(request.getNewPassword()));
         clientProfessionel.setPasswordChanged(true);
@@ -113,7 +113,7 @@ public class ClientProfessionelController {
     public ResponseEntity<?> createResetCode(@PathVariable Long id){
      ClientProfessionel clientProfessionel = clientProfessionelService.getClientProfessionelById(id);
      if(clientProfessionel==null){
-         return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+         return new ResponseEntity<>("{\"message\":\"Client Professionel not found\"}",HttpStatus.NOT_FOUND);
      }
      String code = String.format("%06d", new Random().nextInt(999999));
      clientProfessionel.setResetCodePass(code);
@@ -123,15 +123,15 @@ public class ClientProfessionelController {
     }
 
     @PutMapping("/modify/{id}")
-    public ResponseEntity<ClientProfessionel> modifyClient(@RequestBody ClientProfessionelRequest clientProfessionelRequest, @PathVariable Long id){
+    public ResponseEntity<?> modifyClient(@RequestBody ClientProfessionelRequest clientProfessionelRequest, @PathVariable Long id){
         ClientProfessionel clientProfessionel = clientProfessionelService.getClientProfessionelById(id);
         System.out.println(clientProfessionelRequest);
         if (clientProfessionel == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("{\"message\":\"Client Professionel not found\"}",HttpStatus.NOT_FOUND);
         }
         ClientProfessionel testClientProfessionel = clientProfessionelService.getClientProfessionelByEmail(clientProfessionelRequest.getEmail());
         if(testClientProfessionel!=null && testClientProfessionel.getId()!=clientProfessionel.getId()){
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"Email already exists\"}",HttpStatus.BAD_REQUEST);
         }
         byte[] carteRecto=null;
         byte[] carteVerso=null;
@@ -144,6 +144,6 @@ public class ClientProfessionelController {
         clientProfessionel.setCarteVerso(carteVerso);
         clientProfessionel.setPassword(passwordEncoder.encode(clientProfessionelRequest.getPassword()));
 
-        return new ResponseEntity<>(clientProfessionel, HttpStatus.OK);
+        return new ResponseEntity<ClientProfessionel>(clientProfessionel, HttpStatus.OK);
     }
 }

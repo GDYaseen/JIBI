@@ -29,11 +29,11 @@ public class AgentController {
     private SMSService smsService;
 
     @PostMapping("/create")
-    public ResponseEntity<Agent> createAgent(@RequestBody AgentRequest agentRequest){
+    public ResponseEntity<?> createAgent(@RequestBody AgentRequest agentRequest){
         Agent agent = agentService.getAgentByEmail(agentRequest.getEmail());
         System.out.println(agentRequest);
         if (agent != null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("{\"message\":\"Agent with that email already exists\"}",HttpStatus.BAD_REQUEST);
         }
         byte[] carteRecto=null;
         byte[] carteVerso=null;
@@ -54,16 +54,16 @@ public class AgentController {
                 .build();
 
         Agent createdAgent = agentService.saveAgent(newAgent);
-        return new ResponseEntity<>(createdAgent, HttpStatus.OK);
+        return new ResponseEntity<Agent>(createdAgent, HttpStatus.OK);
     }
     @GetMapping("/{email}")
-    public ResponseEntity<Agent> getAgent(@PathVariable String email){
+    public ResponseEntity<?> getAgent(@PathVariable String email){
         if(email == null)
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"No email was provided\"}",HttpStatus.BAD_REQUEST);
         Agent agent = agentService.getAgentByEmail(email);
         if(agent == null)
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(agent,HttpStatus.OK);
+            return new ResponseEntity<>("{\"message\":\"Agent not found\"}",HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Agent>(agent,HttpStatus.OK);
     }
     @GetMapping("")
     public ResponseEntity<List<Agent>> getAllAgents(){
@@ -74,21 +74,21 @@ public class AgentController {
    @DeleteMapping("/{id}")
    public ResponseEntity<?> deleteAgent(@PathVariable Long id){
         agentService.deleteAgent(id);
-        return ResponseEntity.ok("Agent deleted");
+        return ResponseEntity.ok("{\"message\":\"Agent Deleted\"}");
    }
 
    @PutMapping("/changepass/{id}")
    public ResponseEntity<?> changePassword(@RequestBody ChangePassRequest request,@PathVariable Long id){
         Agent agent = agentService.getAgentById(id);
         if(agent==null){
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("{\"message\":\"Agent not found\"}",HttpStatus.NOT_FOUND);
         }
         if(request.getNewPassword()==null || request.getCode()==null){
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"Code or new password not provided \"}",HttpStatus.BAD_REQUEST);
         }
         if(!agent.getResetCodePass().equals(request.getCode())){
             System.out.println(agent.getResetCodePass()+"   "+ request.getCode());
-            return new ResponseEntity<>("Wrong code",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"Wrong Code\"}",HttpStatus.BAD_REQUEST);
         }
         agent.setPassword(passwordEncoder.encode(request.getNewPassword()));
         agent.setPasswordChanged(true);
@@ -100,7 +100,7 @@ public class AgentController {
    public ResponseEntity<?> createResetCode(@PathVariable Long id){
     Agent agent = agentService.getAgentById(id);
     if(agent==null){
-        return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("{\"message\":\"Agent not found\"}",HttpStatus.NOT_FOUND);
     }
     String code = String.format("%06d", new Random().nextInt(999999));
     agent.setResetCodePass(code);
@@ -110,15 +110,15 @@ public class AgentController {
 }
 
    @PutMapping("/modify/{id}")
-   public ResponseEntity<Agent> modifyAgent(@RequestBody AgentRequest agentRequest,@PathVariable Long id){
+   public ResponseEntity<?> modifyAgent(@RequestBody AgentRequest agentRequest,@PathVariable Long id){
     Agent agent = agentService.getAgentById(id);
         System.out.println(agentRequest);
         if (agent == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("{\"message\":\"Agent not found.\"}",HttpStatus.NOT_FOUND);
         }
         Agent testAgent = agentService.getAgentByEmail(agentRequest.getEmail());
         if(testAgent!=null && testAgent.getId()!=agent.getId()){
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"Email Already exists\"}",HttpStatus.BAD_REQUEST);
         }
         byte[] carteRecto=null;
         byte[] carteVerso=null;
@@ -140,6 +140,6 @@ public class AgentController {
                 .build();
 
         Agent createdAgent = agentService.saveAgent(newAgent);
-        return new ResponseEntity<>(createdAgent, HttpStatus.OK);
+        return new ResponseEntity<Agent>(createdAgent, HttpStatus.OK);
    }
 }

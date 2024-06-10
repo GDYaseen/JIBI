@@ -19,7 +19,6 @@ public class CreanceService {
 
     private CreanceRepository creanceRepository;
     private FormulaireRepository formulaireRepository;
-
     public Creance saveCreance(Creance creance) {
         return this.creanceRepository.save(creance);
     }

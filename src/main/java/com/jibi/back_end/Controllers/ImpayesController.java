@@ -33,12 +33,12 @@ public class ImpayesController {
     private ClientService clientService;
 
     @PostMapping("/create")
-    public ResponseEntity<Impaye> createImpaye(@RequestBody ImpayeRequest body){
-        if(body.getSenderPhone() == null || body.getCreanceId() == null) return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> createImpaye(@RequestBody ImpayeRequest body){
+        if(body.getSenderPhone() == null || body.getCreanceId() == null) return new ResponseEntity<>("{\"message\":\"Sender phone number or creance Id not found\"}",HttpStatus.BAD_REQUEST);
 
         Client sender = clientService.getClientByPhoneNumber(body.getSenderPhone());
         Creance creance = creanceService.getCreance(body.getCreanceId());
-        if(sender == null) return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        if(sender == null) return new ResponseEntity<>("{\"message\":\"Sender not found\"}",HttpStatus.NOT_FOUND);
 
         Impaye impaye = Impaye.builder()
                 .client(sender)

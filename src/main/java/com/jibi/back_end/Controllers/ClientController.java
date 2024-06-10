@@ -68,13 +68,13 @@ public class ClientController {
     }
 
     @GetMapping("/{phone}")
-    public ResponseEntity<Client> getClient(@PathVariable String phone){
+    public ResponseEntity<?> getClient(@PathVariable String phone){
         if(phone == null)
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"Phone not provided\"}",HttpStatus.BAD_REQUEST);
         Client client = clientService.getClientByPhoneNumber(phone);
         if(client == null)
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(client,HttpStatus.OK);
+            return new ResponseEntity<>("{\"message\":\"Client not found\"}",HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Client>(client,HttpStatus.OK);
     }
 
     @GetMapping("")
@@ -87,7 +87,7 @@ public class ClientController {
    @DeleteMapping("/{id}")
    public ResponseEntity<?> deleteClient(@PathVariable Long id){
     clientService.deleteClient(id);
-        return ResponseEntity.ok("Client deleted");
+        return ResponseEntity.ok("{\"message\":\"Client deleted\"}");
    }
 
    @PutMapping("/changepass/{id}")
@@ -95,14 +95,14 @@ public class ClientController {
     System.out.println("inside /changepass/{id}");
         Client client = clientService.getClientById(id);
         if(client==null){
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("{\"message\":\"Client not found\"}",HttpStatus.NOT_FOUND);
         }
         if(request.getNewPassword()==null){
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"New Password not provided\"}",HttpStatus.BAD_REQUEST);
         }
         if(!client.getResetCodePass().equals(request.getCode())){
             System.out.println(client.getResetCodePass()+"   "+ request.getCode());
-            return new ResponseEntity<>("Wrong code",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"Wrong Code\"}",HttpStatus.BAD_REQUEST);
         }
         client.setPassword(passwordEncoder.encode(request.getNewPassword()));
         client.setPasswordChanged(true);
@@ -116,7 +116,7 @@ public class ClientController {
     public ResponseEntity<?> createResetCode(@PathVariable Long id){
      Client client = clientService.getClientById(id);
      if(client==null){
-         return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+         return new ResponseEntity<>("{\"message\":\"Client not found\"}",HttpStatus.NOT_FOUND);
      }
      String code = String.format("%06d", new Random().nextInt(999999));
      client.setResetCodePass(code);
@@ -126,15 +126,15 @@ public class ClientController {
     }
 
    @PutMapping("/modify/{id}")
-   public ResponseEntity<Client> modifyClient(@RequestBody ClientRequest clientRequest,@PathVariable Long id){
+   public ResponseEntity<?> modifyClient(@RequestBody ClientRequest clientRequest,@PathVariable Long id){
     Client client = clientService.getClientById(id);
         System.out.println(clientRequest);
         if (client == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("{\"message\":\"Client not found.\"}",HttpStatus.NOT_FOUND);
         }
         Client testClient = clientService.getClientByEmail(clientRequest.getEmail());
         if(testClient!=null && testClient.getId()!=client.getId()){
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"Email already exists.\"}",HttpStatus.BAD_REQUEST);
         }
         byte[] carteRecto=null;
         byte[] carteVerso=null;
@@ -147,6 +147,6 @@ public class ClientController {
         client.setCarteVerso(carteVerso);
         client.setPassword(passwordEncoder.encode(clientRequest.getPassword()));
 
-        return new ResponseEntity<>(client, HttpStatus.OK);
+        return new ResponseEntity<Client>(client, HttpStatus.OK);
    }
 }
