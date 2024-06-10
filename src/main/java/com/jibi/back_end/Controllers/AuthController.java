@@ -34,7 +34,7 @@ import org.springframework.http.ResponseEntity;
             return new ResponseEntity<AuthenticationResponse>(service.login(request,"Agent"),HttpStatus.OK);
         }
             catch(Exception e){
-                return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("{\"message\":\""+e.getMessage()+"\"}",HttpStatus.BAD_REQUEST);
             }
         }
         @PostMapping("/admin/login")
@@ -60,7 +60,7 @@ import org.springframework.http.ResponseEntity;
                     return ResponseEntity.ok(service.login(request, "Agent"));
                 }
             } catch (Exception e) {
-                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("{\"message\":\""+e.getMessage()+"\"}", HttpStatus.BAD_REQUEST);
             }
         }
 

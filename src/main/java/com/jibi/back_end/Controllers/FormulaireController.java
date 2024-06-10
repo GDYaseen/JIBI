@@ -22,10 +22,10 @@ public class FormulaireController {
     private FormulaireService formulaireService;
 
     @GetMapping("")
-    public ResponseEntity<FormulaireDto> getForms(@RequestParam Long id){
+    public ResponseEntity<?> getForms(@RequestParam Long id){
         Formulaire f = formulaireService.getFormulaireByCreanceId(id);
         if(f ==  null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("{\"message\":\"Formulaire Not found\"}",HttpStatus.NOT_FOUND);
         }    
         return new ResponseEntity<FormulaireDto>(FormulaireMapper.formulaireToFormulaireDto(f),HttpStatus.OK);
     }

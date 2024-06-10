@@ -6,7 +6,9 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 import com.jibi.back_end.models.Creance;
+import com.jibi.back_end.models.Formulaire;
 import com.jibi.back_end.repos.CreanceRepository;
+import com.jibi.back_end.repos.FormulaireRepository;
 
 import java.util.List;
 
@@ -16,7 +18,8 @@ import java.util.List;
 public class CreanceService {
 
     private CreanceRepository creanceRepository;
-
+    private FormulaireRepository formulaireRepository;
+    
     public Creance saveCreance(Creance creance) {
         return this.creanceRepository.save(creance);
     }
@@ -42,6 +45,12 @@ public class CreanceService {
     public void saveAllCreances(List<Creance> creanceList) {
         creanceRepository.saveAll(creanceList);
     }
-    
+    public void deleteCreance(Creance creance) {
+        Formulaire form = creance.getForm();
+        if (form != null) {
+            formulaireRepository.delete(form);
+        }
+        creanceRepository.delete(creance);
+    }
 }
 

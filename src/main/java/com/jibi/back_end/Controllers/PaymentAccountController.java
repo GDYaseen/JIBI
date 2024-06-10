@@ -22,10 +22,10 @@ public class PaymentAccountController {
     private PaymentAccountService accountService;
 
     @GetMapping("")
-    public ResponseEntity<AccountDto> getSolde(@RequestParam Long id){
+    public ResponseEntity<?> getSolde(@RequestParam Long id){
         PaymentAccount account = accountService.getPaymentAccountByClientId(id);
         if (account == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("{\"message\":\"Payment account not found\"}",HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<AccountDto>(AccountMapper.mapAccountToAccountDTO(account),HttpStatus.OK);
     }

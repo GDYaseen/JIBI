@@ -22,10 +22,13 @@ public class AdminController {
     private final PasswordEncoder passwordEncoder;
     
     @PostMapping("/create")
-    public ResponseEntity<Admin> createAdmin(@RequestBody AdminRequest adminRequest){
+    public ResponseEntity<?> createAdmin(@RequestBody AdminRequest adminRequest){
+        if(adminRequest.getEmail()==null){
+            return new ResponseEntity<>("{\"message\":\"No Email provided\"}",HttpStatus.BAD_REQUEST);
+        }
         Admin admin = adminService.getAdminByEmail(adminRequest.getEmail());
         if (admin != null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"Admin not found.\"}",HttpStatus.NOT_FOUND);
         }
 
         Admin newAdmin = Admin.builder()
@@ -35,7 +38,7 @@ public class AdminController {
                 .build();
 
         Admin createdAdmin = adminService.saveAdmin(newAdmin);
-        return new ResponseEntity<>(createdAdmin, HttpStatus.OK);
+        return new ResponseEntity<Admin>(createdAdmin, HttpStatus.OK);
     }
 
     @GetMapping("")
@@ -44,14 +47,14 @@ public class AdminController {
     return new ResponseEntity<>(list,HttpStatus.OK);
    }
    @PutMapping("/modify/{id}")
-   public ResponseEntity<Admin> modifyAdmin(@RequestBody AdminRequest adminRequest,@PathVariable Long id){
+   public ResponseEntity<?> modifyAdmin(@RequestBody AdminRequest adminRequest,@PathVariable Long id){
     Admin admin = adminService.getAdminById(id);
     if(admin==null){
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("{\"message\":\"Admin with that is is not found.\"}",HttpStatus.NOT_FOUND);
     }
     Admin testAdmin = adminService.getAdminByEmail(adminRequest.getEmail()) ;
     if (testAdmin!= null && testAdmin.getId()!=admin.getId()) {
-        return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("{\"message\":\"Email already exists\"}",HttpStatus.BAD_REQUEST);
     }
 
     Admin newAdmin = Admin.builder()
@@ -62,12 +65,12 @@ public class AdminController {
             .build();
 
     Admin createdAdmin = adminService.saveAdmin(newAdmin);
-    return new ResponseEntity<>(createdAdmin, HttpStatus.OK);
+    return new ResponseEntity<Admin>(createdAdmin, HttpStatus.OK);
    }
 
    @DeleteMapping("/{id}")
    public ResponseEntity<?> deleteMapping(@PathVariable Long id){
         adminService.deleteAdmin(id);
-        return ResponseEntity.ok("Admin deleted");
+        return ResponseEntity.ok("{\"message\":\"Admin Deleted\"}");
    }
 }
