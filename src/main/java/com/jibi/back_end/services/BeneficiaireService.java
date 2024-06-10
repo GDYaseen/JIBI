@@ -13,7 +13,7 @@ public class BeneficiaireService {
     @Autowired
     private BeneficiaireRepository beneficiaireRepository;
 
-    public Beneficiaire createBeneficiaire(Long accountNumber, String clientName, Long userId) {
+    public Beneficiaire createBeneficiaire(String accountNumber, String clientName, Long userId) {
         Beneficiaire beneficiaire = new Beneficiaire(clientName, accountNumber, userId);
         return beneficiaireRepository.save(beneficiaire);
     }

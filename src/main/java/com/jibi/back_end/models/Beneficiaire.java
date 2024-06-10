@@ -14,13 +14,13 @@ public class Beneficiaire {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long phoneNumber;
+    private String phoneNumber;
 
     private String clientName;
 
     private Long userId;
 
-    public Beneficiaire(String clientName, Long phoneNumber, Long userId){
+    public Beneficiaire(String clientName, String phoneNumber, Long userId){
         this.phoneNumber = phoneNumber;
         this.clientName = clientName;
         this.userId = userId;

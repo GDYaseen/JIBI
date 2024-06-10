@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class BeneficiaryRequest {
 
-    private Long phoneNumber;
+    private String phoneNumber;
     private String clientName;
     private Long userId;
 }
