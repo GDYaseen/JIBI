@@ -26,7 +26,6 @@ public class PaymentAccount {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "creditCard_id", nullable = false)
-    @JsonIgnore
     private CreditCard creditCard;
     
     @OneToOne(mappedBy = "account")

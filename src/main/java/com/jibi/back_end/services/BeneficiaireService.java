@@ -14,11 +14,15 @@ public class BeneficiaireService {
     private BeneficiaireRepository beneficiaireRepository;
 
     public Beneficiaire createBeneficiaire(Long accountNumber, String clientName, Long userId) {
-        Beneficiaire beneficiaire = new Beneficiaire(accountNumber, clientName, userId);
+        Beneficiaire beneficiaire = new Beneficiaire(clientName, accountNumber, userId);
         return beneficiaireRepository.save(beneficiaire);
     }
 
     public List<Beneficiaire> getBenefitersForUser(Long userId) {
         return beneficiaireRepository.findAllByUserId(userId);
+    }
+
+    public void delete(Long id){
+        this.beneficiaireRepository.deleteById(id);
     }
 }

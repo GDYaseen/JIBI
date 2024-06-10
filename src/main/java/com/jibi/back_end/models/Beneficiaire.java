@@ -1,8 +1,6 @@
 package com.jibi.back_end.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,14 +9,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@IdClass(CompositeKey.class)
 public class Beneficiaire {
     @Id
-    private Long accountNumber;
-    
-    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long phoneNumber;
+
     private String clientName;
-    
-    @Id
+
     private Long userId;
+
+    public Beneficiaire(String clientName, Long phoneNumber, Long userId){
+        this.phoneNumber = phoneNumber;
+        this.clientName = clientName;
+        this.userId = userId;
+    }
 }

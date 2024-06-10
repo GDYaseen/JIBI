@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.jibi.back_end.models.Beneficiaire;
 import com.jibi.back_end.models.CompositeKey;
 
-public interface BeneficiaireRepository extends JpaRepository<Beneficiaire, CompositeKey> {
+public interface BeneficiaireRepository extends JpaRepository<Beneficiaire, Long> {
     List<Beneficiaire> findAllByUserId(Long id);
 }
