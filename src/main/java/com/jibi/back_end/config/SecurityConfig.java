@@ -13,11 +13,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.jibi.back_end.models.*;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -53,6 +55,8 @@ public class SecurityConfig {
                                 .hasAuthority(SuperAdmin.class.getName())
                                 .requestMatchers("/api/v1/agent","/api/v1/agent/create","/api/v1/agent/modify/**")
                                 .hasAnyAuthority(Admin.class.getName(),SuperAdmin.class.getName())
+                                .requestMatchers("/api/v1/cmi/creancier","/api/v1/cmi/creancier/**") // Use antMatchers for more granular control
+                                .hasAnyAuthority(Admin.class.getName(),SuperAdmin.class.getName())
                                 .requestMatchers("/api/v1/agent/changepass/**") // Use antMatchers for more granular control
                                 .hasAnyAuthority(Agent.class.getName(),Admin.class.getName(),SuperAdmin.class.getName())
                                 .requestMatchers("/api/v1/client","/api/v1/client/create","/api/v1/client/modify/**")
@@ -65,6 +69,13 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(adminAuthenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http.cors(cors -> cors.configurationSource(request -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(List.of("*"));
+            configuration.setAllowedMethods(List.of("*"));
+            configuration.setAllowedHeaders(List.of("*"));
+            return configuration;
+        }));
         return http.build();
     }
 @Autowired

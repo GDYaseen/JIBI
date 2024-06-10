@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import com.jibi.back_end.models.PaymentAccount;
 import com.jibi.back_end.request.ClientRequest;
 import com.jibi.back_end.request.ChangePassRequest;
 import com.jibi.back_end.services.ClientService;
+import com.jibi.back_end.services.SMSService;
 
 @RestController
 @RequestMapping("/api/v1/client")
@@ -24,6 +26,7 @@ public class ClientController {
 
     private ClientService clientService;
     private final PasswordEncoder passwordEncoder;
+    private SMSService smsService;
 
     @PostMapping("/create")
     public ResponseEntity<Client> createClient(@RequestBody ClientRequest clientRequest){
@@ -64,15 +67,16 @@ public class ClientController {
         return new ResponseEntity<>(createdClient, HttpStatus.OK);
     }
 
-   @GetMapping("/{email}")
-    public ResponseEntity<Client> geClient(@PathVariable String email){
-        if(email == null)
+    @GetMapping("/{phone}")
+    public ResponseEntity<Client> getClient(@PathVariable String phone){
+        if(phone == null)
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
-        Client client = clientService.getClientByEmail(email);
+        Client client = clientService.getClientByPhoneNumber(phone);
         if(client == null)
             return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(client,HttpStatus.OK);
     }
+
     @GetMapping("")
     public ResponseEntity<List<Client>> getAllClients(){
         System.out.println("Accessing /api/v1/client");
@@ -87,7 +91,7 @@ public class ClientController {
    }
 
    @PutMapping("/changepass/{id}")
-   public ResponseEntity<Client> changePassword(@RequestBody ChangePassRequest request,@PathVariable Long id){
+   public ResponseEntity<?> changePassword(@RequestBody ChangePassRequest request,@PathVariable Long id){
     System.out.println("inside /changepass/{id}");
         Client client = clientService.getClientById(id);
         if(client==null){
@@ -96,12 +100,31 @@ public class ClientController {
         if(request.getNewPassword()==null){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
+        if(!client.getResetCodePass().equals(request.getCode())){
+            System.out.println(client.getResetCodePass()+"   "+ request.getCode());
+            return new ResponseEntity<>("Wrong code",HttpStatus.BAD_REQUEST);
+        }
         client.setPassword(passwordEncoder.encode(request.getNewPassword()));
         client.setPasswordChanged(true);
+        client.setResetCodePass(null);
         clientService.saveClient(client);
 
         return new ResponseEntity<Client>(client,HttpStatus.OK);
    }
+
+    @PutMapping("/createResetCode/{id}")
+    public ResponseEntity<?> createResetCode(@PathVariable Long id){
+     Client client = clientService.getClientById(id);
+     if(client==null){
+         return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+     }
+     String code = String.format("%06d", new Random().nextInt(999999));
+     client.setResetCodePass(code);
+     smsService.sendSMS("Hello, your verification code is "+code, client.getPhoneNumber().replaceFirst("0","212"));
+     clientService.saveClient(client);
+     return new ResponseEntity<Client>(client,HttpStatus.OK);
+    }
+
    @PutMapping("/modify/{id}")
    public ResponseEntity<Client> modifyClient(@RequestBody ClientRequest clientRequest,@PathVariable Long id){
     Client client = clientService.getClientById(id);

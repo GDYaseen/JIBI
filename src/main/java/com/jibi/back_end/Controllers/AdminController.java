@@ -41,7 +41,6 @@ public class AdminController {
     @GetMapping("")
    public ResponseEntity<List<Admin>> getAdmins(){
     List<Admin> list = adminService.getAllAdmins();
-    System.out.println("Admin list: "+list.size());
     return new ResponseEntity<>(list,HttpStatus.OK);
    }
    @PutMapping("/modify/{id}")

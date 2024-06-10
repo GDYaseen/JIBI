@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.jibi.back_end.models.Creance;
 import com.jibi.back_end.models.Creancier;
 import com.jibi.back_end.repos.CreancierRepository;
 

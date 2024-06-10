@@ -36,7 +36,7 @@ public class Creance {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @OneToOne(mappedBy = "creance")
+    @OneToOne(mappedBy = "creance",cascade = CascadeType.ALL)
     private Formulaire form;
 
     @PrePersist

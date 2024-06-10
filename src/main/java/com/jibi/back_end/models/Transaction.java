@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import com.jibi.back_end.Enum.TransactionStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Builder
@@ -24,14 +25,18 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
-    private Client client;
+    @JoinColumn(name = "sender_id")
+    private User sender;
 
     @ManyToOne
-    @JoinColumn(name = "impaye_id", nullable = false)
+    @JoinColumn(name = "receiver_id")
+    private User receiver;
+
+    @ManyToOne
+    @JoinColumn(name = "impaye_id")
     private Impaye impaye;
 
-    private Double amount;
+    private BigDecimal amount;
 
     private LocalDateTime transactionDate;
 
@@ -49,3 +54,4 @@ public class Transaction {
         createdAt=LocalDateTime.now();
     }
 }
+

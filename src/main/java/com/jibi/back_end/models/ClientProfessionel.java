@@ -49,7 +49,7 @@ public class ClientProfessionel extends User{
     public ClientProfessionel(Long id, String phoneNumber, String name, String email,
                   LocalDateTime createdAt, LocalDateTime updatedAt,
                   PaymentAccount account,String password,boolean passwordChanged,Double solde,byte[] carteRecto,byte[]carteVerso) {
-        super(id, phoneNumber, name, email, createdAt, updatedAt);
+        super(id, phoneNumber, name, email,null, createdAt, updatedAt);
         this.account = account;
         this.password=password;
         this.passwordChanged=passwordChanged;

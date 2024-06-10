@@ -33,7 +33,7 @@ public class Creancier{
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "creancier")
+    @OneToMany(mappedBy = "creancier",cascade = CascadeType.ALL)
     private List<Creance> creances;
 
     @PrePersist

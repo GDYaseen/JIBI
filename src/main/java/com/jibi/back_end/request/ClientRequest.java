@@ -9,7 +9,7 @@ public class ClientRequest {
     private String name;
     private PaymentAccountRequest paymentAccountRequest;
     private String password;
-    private byte[] carteRecto;
-    private byte[] carteVerso;
+    private String carteRecto;
+    private String carteVerso;
 
 }

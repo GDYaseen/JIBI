@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.Base64;
 
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import com.jibi.back_end.models.Agent;
 import com.jibi.back_end.request.AgentRequest;
 import com.jibi.back_end.request.ChangePassRequest;
 import com.jibi.back_end.services.AgentService;
+import com.jibi.back_end.services.SMSService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -24,6 +26,7 @@ public class AgentController {
 
     private AgentService agentService;
     private final PasswordEncoder passwordEncoder;
+    private SMSService smsService;
 
     @PostMapping("/create")
     public ResponseEntity<Agent> createAgent(@RequestBody AgentRequest agentRequest){
@@ -64,7 +67,6 @@ public class AgentController {
     }
     @GetMapping("")
     public ResponseEntity<List<Agent>> getAllAgents(){
-        System.out.println("Accessing /api/v1/agent");
         List<Agent> agents = agentService.getAllAgents();
         return new ResponseEntity<>(agents,HttpStatus.OK);
     }
@@ -76,19 +78,37 @@ public class AgentController {
    }
 
    @PutMapping("/changepass/{id}")
-   public ResponseEntity<Agent> changePassword(@RequestBody ChangePassRequest request,@PathVariable Long id){
+   public ResponseEntity<?> changePassword(@RequestBody ChangePassRequest request,@PathVariable Long id){
         Agent agent = agentService.getAgentById(id);
         if(agent==null){
             return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
         }
-        if(request.getNewPassword()==null){
+        if(request.getNewPassword()==null || request.getCode()==null){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+        if(!agent.getResetCodePass().equals(request.getCode())){
+            System.out.println(agent.getResetCodePass()+"   "+ request.getCode());
+            return new ResponseEntity<>("Wrong code",HttpStatus.BAD_REQUEST);
         }
         agent.setPassword(passwordEncoder.encode(request.getNewPassword()));
         agent.setPasswordChanged(true);
+        agent.setResetCodePass(null);
         agentService.saveAgent(agent);
         return new ResponseEntity<Agent>(agent,HttpStatus.OK);
    }
+   @PutMapping("/createResetCode/{id}")
+   public ResponseEntity<?> createResetCode(@PathVariable Long id){
+    Agent agent = agentService.getAgentById(id);
+    if(agent==null){
+        return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+    }
+    String code = String.format("%06d", new Random().nextInt(999999));
+    agent.setResetCodePass(code);
+    smsService.sendSMS("Hello, your verification code is "+code, agent.getPhoneNumber().replaceFirst("0","212"));
+    agentService.saveAgent(agent);
+    return new ResponseEntity<Agent>(agent,HttpStatus.OK);
+}
+
    @PutMapping("/modify/{id}")
    public ResponseEntity<Agent> modifyAgent(@RequestBody AgentRequest agentRequest,@PathVariable Long id){
     Agent agent = agentService.getAgentById(id);

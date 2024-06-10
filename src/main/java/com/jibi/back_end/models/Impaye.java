@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jibi.back_end.Enum.ImpayeType;
 
 import java.time.LocalDateTime;
 
@@ -49,8 +50,4 @@ public class Impaye {
         createdAt=LocalDateTime.now();
     }
 
-}
-
-enum ImpayeType {
-    SIMPLE, FRAIS, PENALITE
 }

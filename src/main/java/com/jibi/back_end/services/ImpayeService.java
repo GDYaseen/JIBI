@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import com.jibi.back_end.dto.MappedTransaction;
 import com.jibi.back_end.models.Impaye;
 import com.jibi.back_end.repos.ImpayeRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @AllArgsConstructor
@@ -26,9 +29,18 @@ public class ImpayeService {
                 .orElse(null);
     }
 
-    public List<Impaye> getImpayesByClientIdAndImpayeId(Long clientId, Long creanceId) {
-        return this.impayeRepository.findByClientIdAndCreanceId(clientId, creanceId)
+    public List<MappedTransaction> getImpayesByClientIdAndImpayeId(Long clientId, Long creanceId) {
+        List<Impaye> impayees = this.impayeRepository.findByClientIdAndCreanceId(clientId, creanceId)
                 .orElse(null);
+        return impayees.stream()
+                .map(impaye -> MappedTransaction.builder()
+                        .sender(impaye.getClient().getName())
+                        .receiver(impaye.getCreance().getCreancier().getCreancierName())
+                        .status(impaye.getType().name())
+                        .transactionDate(impaye.getDueDate())
+                        .amount(BigDecimal.valueOf(impaye.getAmount()))
+                        .build()
+                ).collect(Collectors.toList());
     }
 
     public List<Impaye> getAllImpayes() {

@@ -40,7 +40,11 @@ public class ClientProfessionelService {
                 .orElse(null);
     }
 
-    public void delete(Long id){
-        this.clientProfessionelRepository.deleteById(id);
+    public ClientProfessionel getClientProfessionelByEmail(String email) {
+        return this.clientProfessionelRepository.findByEmail(email)
+                .orElse(null);
+    }
+    public List<ClientProfessionel> getAllClientsProfessionel() {
+        return this.clientProfessionelRepository.findAll();
     }
 }

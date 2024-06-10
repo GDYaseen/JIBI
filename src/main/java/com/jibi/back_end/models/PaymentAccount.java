@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Builder
@@ -21,10 +22,11 @@ public class PaymentAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Double balance;
+    private BigDecimal balance;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "creditCard_id", nullable = false)
+    @JsonIgnore
     private CreditCard creditCard;
     
     @OneToOne(mappedBy = "account")
@@ -41,7 +43,7 @@ public class PaymentAccount {
 
     @PrePersist
     public void initPersist(){
-        balance=0D;
+        balance=BigDecimal.ZERO;
         createdAt=LocalDateTime.now();
     }
 }
