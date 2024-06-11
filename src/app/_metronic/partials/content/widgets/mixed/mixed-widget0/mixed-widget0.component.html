@@ -1,0 +1,58 @@
+<div class="card-body p-0">
+  <!-- begin::Header -->
+  <div class="px-9 pt-7 card-rounded h-275px w-100" [ngClass]="'bg-' + color">
+    <!-- begin::Heading -->
+    <div class="d-flex flex-stack">
+      <h3 class="m-0 text-white fw-bolder fs-3">Summary</h3>
+
+    </div>
+    <!-- end::Heading -->
+    <!-- begin::Balance -->
+    <div class="d-flex text-center flex-column text-white pt-8">
+      <span class="fw-bold fs-7">Your Balance</span>
+      <span class="fw-bolder fs-2x pt-1">{{ balance }}</span>
+    </div>
+    <!-- end::Balance -->
+  </div>
+  <!-- end::Header -->
+  <!-- begin::Stats -->
+  <div class="card-p mt-n20 position-relative">
+    <!-- begin::Row -->
+    <div class="row g-0">
+      <!-- begin::Col -->
+      <div class="col bg-light-warning px-6 py-8 rounded-2 me-7 mb-7">
+        <span [inlineSVG]="'./assets/media/icons/duotune/finance/fin002.svg'"
+          class="svg-icon svg-icon-3x svg-icon-warning d-block my-2"></span>
+        <a routerLink="/card" routerLinkActive="router-link-active" class="text-warning fw-bold fs-6"> Cards </a>
+      </div>
+      <!-- end::Col -->
+      <!-- begin::Col -->
+      <div class="col bg-light-primary px-6 py-8 rounded-2 mb-7">
+        <span [inlineSVG]="'./assets/media/icons/duotune/abstract/abs027.svg'"
+          class="svg-icon svg-icon-3x svg-icon-primary d-block my-2"></span>
+        <a routerLink="/history" class="text-primary fw-bold fs-6"> Transactions </a>
+      </div>
+      <!-- end::Col -->
+    </div>
+    <!-- end::Row -->
+    <!-- begin::Row -->
+    <div class="row g-0">
+      <!-- begin::Col -->
+      <div class="col bg-light-danger px-6 py-8 rounded-2 me-7">
+        <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr034.svg'"
+          class="svg-icon svg-icon-3x svg-icon-danger d-block my-2"></span>
+        <a routerLink="/transfer" class="text-danger fw-bold fs-6 mt-2"> New Bank Transfer </a>
+      </div>
+      <!-- end::Col -->
+      <!-- begin::Col -->
+      <div class="col bg-light-success px-6 py-8 rounded-2">
+        <span [inlineSVG]="'./assets/media/icons/duotune/communication/com014.svg'"
+          class="svg-icon svg-icon-3x svg-icon-success d-block my-2"></span>
+        <a routerLink="/beneficiaries" class="text-success fw-bold fs-6 mt-2"> Beneficiaries </a>
+      </div>
+      <!-- end::Col -->
+    </div>
+    <!-- end::Row -->
+  </div>
+  <!-- end::Stats -->
+</div>

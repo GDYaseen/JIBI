@@ -1,0 +1,25 @@
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">
+            Add a new beneficiary
+        </h1>
+    </div>
+    <div class="card-body">
+        <form action="#" method="get" (submit)="handleSubmit($event)">
+            <div class="form-group mb-10">
+                <label for="name" class="required form-label">Name</label>
+                <input type="text" id="name" name="name" [(ngModel)]="beneficiary.clientName"
+                    class="form-control form-control-solid" placeholder="Name" />
+            </div>
+            <div class="form-group mb-10">
+                <label for="phone_number" class="required form-label">Phone Number</label>
+                <input type="text" id="phone_number" name="phone_number" [(ngModel)]="beneficiary.phoneNumber"
+                    class="form-control form-control-solid" placeholder="Phone Number" />
+            </div>
+            <div class="form-group mb-10">
+                <button type="submit" class="btn btn-primary">Add Beneficiary</button>
+                <a routerLink="/beneficiaries" class="btn btn-secondary ms-3">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="card">
+    <div class="card-body">
+        <div class="pb-10 pb-lg-15">
+            <h2 class="fw-bolder text-gray-900">Send Money</h2>
+        </div>
+        <div>
+            <div class="mb-10 fv-row">
+                <label class="d-flex align-items-center form-label mb-3">
+                    Specify Amount<i class="fas fa-exclamation-circle ms-2 fs-7"
+                        ngbTooltip="Provide the amount you are desiring to transfer">
+
+                    </i>
+                </label>
+                <div class="row mb-2" data-kt-buttons="true">
+                    <div class="col" *ngFor="let item of amounts; let i = index">
+                        <input name="amount" type="radio" class="btn-check" id="kt_account_team_size_select_{{i}}"
+                            value="{{item}}" [ngClass]="{'checked': amount == item}" [(ngModel)]="amount" />
+                        <label class="
+                  btn btn-outline btn-outline-dashed btn-outline-default
+                  w-100
+                  p-4
+                " for="kt_account_team_size_select_{{i}}">
+                            <span class="fw-bolder fs-3">{{item}}</span>
+                        </label>
+
+                    </div>
+                    <div class="col">
+                        <input type="text" class="btn-check" id="kt_account_team_size_select_4" />
+                        <label class="
+                  btn btn-outline btn-outline-dashed btn-outline-default
+                  w-100
+                  p-2
+                " for="kt_account_team_size_select_4">
+                            <span class="fw-bolder fs-3">
+                                <input type="text" class="form-control" [(ngModel)]="amount">
+                            </span>
+                        </label>
+
+                    </div>
+                </div>
+            </div>
+            <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Select Beneficiary</label>
+                <div class="border rounded w-100">
+                    <select id="kt_docs_select2_rich_content" data-kt-select2="true" data-control="select2"
+                        class="form-select w-100 form-select-transparent" data-placeholder="Select a beneficiary">
+                        <option></option>
+                        <ng-container *ngFor="let item of beneficiaries">
+                            <option value="{{item.phoneNumber}}">{{item.clientName}} ( {{ item.phoneNumber }} )
+                            </option>
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button type="button" (click)="handleTransfer($event)" class="btn btn-lg btn-primary me-3">
+                <span class="indicator-label">
+                    Submit
+                </span>
+            </button>
+        </div>
+    </div>
+</div>

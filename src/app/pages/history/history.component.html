@@ -1,0 +1,51 @@
+<div class="card">
+    <!-- begin::Header -->
+    <div class="card-header border-0">
+        <h3 class="card-title fw-bolder text-gray-900">Transactions History</h3>
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+    <div class="card-body pt-2">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="padding: 8px;" class="fw-bolder fs-5">#</th>
+                    <th style="padding: 8px;" class="text-gray-800 fw-bolder fs-6">Description</th>
+                    <th style="padding: 8px;" class="text-gray-800 fw-bolder fs-6 text-center">Date</th>
+                    <th style="padding: 8px;" class="text-gray-800 fw-bolder fs-6 text-end">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- begin::Item -->
+                <tr style="vertical-align: middle;" *ngFor="let item of transactions">
+                    <!-- begin::Bullet -->
+                    <td style="padding: 8px;">
+                        <span class="bullet bullet-vertical h-40px bg-{{getAppropriateColor(item)}} me-5"></span>
+                    </td>
+                    <!-- end::Bullet -->
+                    <!-- begin::Description -->
+                    <td style="padding: 8px;">
+                        <div class="">
+                            <p class="text-gray-800 fw-bolder fs-6 mb-0">
+                                {{ getAppropriateMessage(item) }} <span class="text-primary">{{ getAppropriateName(item)
+                                    }}</span>
+                            </p>
+                        </div>
+                    </td>
+                    <!-- end::Description -->
+                    <td style="padding: 8px;" class="text-center">
+                        <p class="text-gray-800 fw-bolder fs-6 mb-0 min-w-300px">{{ formatDate(item.transactionDate) }}
+                        </p>
+                    </td>
+                    <td style="padding: 8px;" class="text-end">
+                        <span class="badge badge-light fs-5 fw-bolder text-{{getAppropriateColor(item)}}">{{
+                            formatAmount(item) }}</span>
+                    </td>
+                </tr>
+                <!-- end:Item -->
+            </tbody>
+        </table>
+
+    </div>
+    <!-- end::Body -->
+</div>
