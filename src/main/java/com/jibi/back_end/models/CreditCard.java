@@ -49,4 +49,9 @@ public class CreditCard {
     public void initPersist(){
         createdAt=LocalDateTime.now();
     }
+
+    @Override
+    public String toString(){
+        return this.cardHolderName;
+    }
 }

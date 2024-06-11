@@ -33,7 +33,7 @@ public class Transaction {
     private User receiver;
 
     @ManyToOne
-    @JoinColumn(name = "impaye_id")
+    @JoinColumn(name = "impaye_id", nullable = true)
     private Impaye impaye;
 
     private BigDecimal amount;

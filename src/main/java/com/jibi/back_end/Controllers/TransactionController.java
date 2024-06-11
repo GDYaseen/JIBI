@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jibi.back_end.services.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +26,6 @@ import com.jibi.back_end.models.PaymentAccount;
 import com.jibi.back_end.models.Transaction;
 import com.jibi.back_end.models.User;
 import com.jibi.back_end.request.PaymentBodyRequest;
-import com.jibi.back_end.services.ClientProfessionelService;
-import com.jibi.back_end.services.ClientService;
-import com.jibi.back_end.services.ImpayeService;
-import com.jibi.back_end.services.PaymentAccountService;
-import com.jibi.back_end.services.SMSService;
-import com.jibi.back_end.services.TransactionService;
 
 import lombok.AllArgsConstructor;
 
@@ -40,6 +35,7 @@ import lombok.AllArgsConstructor;
 public class TransactionController {
 
     private final ClientService clientService;
+    private final UserService userService;
     private final ClientProfessionelService clientProfessionelService;
     private PaymentAccountService accountService;
     private TransactionService transactionService;
@@ -75,18 +71,23 @@ public class TransactionController {
 
         User sender = findUserByPhoneNumber(body.getSenderPhone());
     if (sender == null) {
-        return new ResponseEntity<>("{\"message\":\"Sender not found\"}", HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(404).body("{\"message\":\"Sender not found\"}");
     }
 
     User receiver = null;
     if (body.getReceiverPhone() != null) {
         receiver = findUserByPhoneNumber(body.getReceiverPhone());
     }
+
+        System.out.println("body.getReceiverPhone()" + body.getReceiverPhone());
+        System.out.println(receiver);
     
         Impaye impaye = null;
         if(body.getImpayeId()!=null) impaye = impayeService.getImpayeById(body.getImpayeId());
 
-        if(sender == null || (receiver == null && impaye==null)) return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        System.out.println("(receiver == null && impaye==null) : " + (receiver == null && impaye==null));
+
+        if(receiver == null && impaye==null) return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         
         Transaction t = Transaction.builder()
             .amount(body.getAmount())
@@ -122,11 +123,8 @@ public class TransactionController {
         return new ResponseEntity<>(transactionService.getClientProfTransactionsByMonth(id),HttpStatus.OK);
     }
     private User findUserByPhoneNumber(String phoneNumber) {
-        User user = clientService.getClientByPhoneNumber(phoneNumber);
-        if (user == null) {
-            user = clientProfessionelService.getClientProfessionelByPhoneNumber(phoneNumber);
-        }
-        return user;
+
+        return  userService.getUserByPhoneNumber(phoneNumber);
     }
 
 }
