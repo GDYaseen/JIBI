@@ -7,7 +7,7 @@ export const environment = {
   appVersion: 'v8.2.4',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: true,
-  apiUrl: 'http://localhost:8009/api',
+  apiUrl: 'https://jibi-production.up.railway.app/api',
   
 };
 
