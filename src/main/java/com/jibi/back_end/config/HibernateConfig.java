@@ -32,9 +32,9 @@ public class HibernateConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://roundhouse.proxy.rlwy.net:41052/railway");
+        dataSource.setUrl("jdbc:mysql://viaduct.proxy.rlwy.net:39629/railway");
         dataSource.setUsername("root");
-        dataSource.setPassword("HRUAqtIeyRaQBFWdszreaVXOdjQETEYz");
+        dataSource.setPassword("zqNvJKaPFCrpxoYrUJMLrrqCeUpZSmYl");
         return dataSource;
     }
 
