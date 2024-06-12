@@ -34,7 +34,7 @@ public class HibernateConfig {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/jibi");
         dataSource.setUsername("root");
-        dataSource.setPassword("");
+        dataSource.setPassword("wrong password");
         return dataSource;
     }
 
