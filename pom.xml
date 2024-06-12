@@ -11,7 +11,7 @@
 	<groupId>com.jibi.back_end</groupId>
 	<artifactId>back_end</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>back_end</name>
 	<description>back_end</description>
 	<properties>
