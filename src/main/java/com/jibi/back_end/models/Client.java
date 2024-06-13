@@ -1,9 +1,11 @@
 package com.jibi.back_end.models;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -13,13 +15,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -64,5 +62,14 @@ public class Client extends User{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(Client.class.getName()));
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                ", password='" + password + '\'' +
+                ", passwordChanged=" + passwordChanged +
+                ", solde=" + solde +
+                '}';
     }
 }

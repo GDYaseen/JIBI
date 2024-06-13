@@ -5,12 +5,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.jibi.back_end.Enum.ImpayeType;
 import com.jibi.back_end.dto.MappedTransaction;
@@ -56,5 +51,12 @@ public class ImpayesController {
     public ResponseEntity<List<MappedTransaction>> getImpayes(@RequestParam Long userId,@RequestParam Long creanceId){
         List<MappedTransaction> list = impayeService.getImpayesByClientIdAndImpayeId(userId, creanceId);
         return new ResponseEntity<List<MappedTransaction>>(list,HttpStatus.OK);
+    }
+
+    @GetMapping("/{phone}")
+    public ResponseEntity<List<MappedTransaction>> getAllImpayesByClientPhone(@PathVariable String phone) {
+        Client client = clientService.getClientByPhoneNumber(phone);
+        List<MappedTransaction> impayes = impayeService.getAllImpayesByClientPhone(client);
+        return new ResponseEntity<>(impayes,HttpStatus.OK);
     }
 }

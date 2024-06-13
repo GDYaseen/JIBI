@@ -1,5 +1,6 @@
 package com.jibi.back_end.repos;
 
+import com.jibi.back_end.models.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +12,5 @@ import java.util.Optional;
 @Repository
 public interface ImpayeRepository extends JpaRepository<Impaye, Long> {
     Optional<List<Impaye>> findByClientIdAndCreanceId(Long clientId, Long creanceId);
+    List<Impaye> findAllByClient(Client client);
 }

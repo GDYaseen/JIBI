@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -55,6 +56,8 @@ public class SecurityConfig {
                                 .hasAuthority(SuperAdmin.class.getName())
                                 .requestMatchers("/api/v1/agent","/api/v1/agent/create","/api/v1/agent/modify/**")
                                 .hasAnyAuthority(Admin.class.getName(),SuperAdmin.class.getName())
+                                .requestMatchers(HttpMethod.GET,"/api/v1/cmi/creancier/**")
+                                .hasAuthority(Client.class.getName())
                                 .requestMatchers("/api/v1/cmi/creancier","/api/v1/cmi/creancier/**") // Use antMatchers for more granular control
                                 .hasAnyAuthority(Admin.class.getName(),SuperAdmin.class.getName())
                                 .requestMatchers("/api/v1/agent/changepass/**") // Use antMatchers for more granular control

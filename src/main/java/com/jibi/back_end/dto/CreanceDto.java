@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class CreanceDto {
     private String creanceCode;
     private String creanceName;
+    private Long creanceId;
 }

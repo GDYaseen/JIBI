@@ -9,6 +9,7 @@ import com.jibi.back_end.models.Creance;
 public class CreanceMapper {
     public static List<CreanceDto> creanceListToCreanceDtoList(List<Creance> list){
         return list.stream().map(c -> CreanceDto.builder()
+                .creanceId(c.getId())
                 .creanceCode(c.getCreanceCode())
                 .creanceName(c.getCreanceName())
                 .build()

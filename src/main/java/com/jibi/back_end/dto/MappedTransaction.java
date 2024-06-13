@@ -12,7 +12,6 @@ public class MappedTransaction {
 
     private String sender;
     private String receiver;
-    private BigDecimal amount;
 
     private LocalDateTime transactionDate;
 

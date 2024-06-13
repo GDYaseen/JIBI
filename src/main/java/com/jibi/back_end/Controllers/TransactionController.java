@@ -80,8 +80,7 @@ public class TransactionController {
     }
 
         System.out.println("body.getReceiverPhone()" + body.getReceiverPhone());
-        System.out.println(receiver);
-    
+
         Impaye impaye = null;
         if(body.getImpayeId()!=null) impaye = impayeService.getImpayeById(body.getImpayeId());
 

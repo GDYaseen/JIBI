@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreancierDto {
+    private Long creanceId;
     private String creancierCode;
     private String creancierName;
     private String category;
